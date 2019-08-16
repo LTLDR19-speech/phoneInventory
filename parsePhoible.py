@@ -54,7 +54,8 @@ with open('data/phoible.csv', mode='r') as infile:
                                   "LanguageName": rows[3],
                                   "ISO6393": rows[2],
                                   "SpecificDialect": rows[4],
-                                  "filename": rows[1] + ".json"
+                                  "profile": rows[1] + ".json",
+                                  "phonelists": rows[1] + ".txt"
                                   })
                 names = []
                 if not "|" in rows[6]:
@@ -120,7 +121,7 @@ for key, val in results.items():
             frequency[key2]["freq"] += 1
 
     # Sort and Filter Phoneme List
-    langPhoneList = list(dict.fromkeys(langPhoneSet))
+    langPhoneList = list(dict.fromkeys(langPhoneSet))s
     langPhoneList.sort()
     langPhoneString = s.join(langPhoneList)
     results[key]["ComplexPhoneList"] = langPhoneString
@@ -155,13 +156,13 @@ for key, val in results.items():
     path = "profiles/"
     with open(path + filename + ".json", 'w', encoding="utf-8") as fp:
         json.dump(val, fp, indent=2)
-    with open("components/" + filename + ".json", 'w', encoding="utf-8") as fp:
+    with open("components/" + filename + ".txt", 'w', encoding="utf-8") as fp:
         components = val["ComponentList"].split(" ")
         i = 1
         for x in components:
             fp.write(x + " " + str(i) + "\n")
             i += 1
-    with open("attested_components/" + filename + ".json", 'w', encoding="utf-8") as fp:
+    with open("attested_components/" + filename + ".txt", 'w', encoding="utf-8") as fp:
         attestedComponents = val["ComplexPhoneList"].split(" ")
         i = 1
         for x in attestedComponents:
