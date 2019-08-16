@@ -57,21 +57,26 @@ with open('data/phoible.csv', mode='r') as infile:
                                   "filename": rows[1] + ".json"
                                   })
                 names = []
-                if not "|" in glyph:
-                    glyph = [prefilter(rows[6])]
+                if not "|" in rows[6]:
+                    glyphs = [prefilter(rows[6])]
                     names = [rows[1]]
                 else:
                     glyphs = prefilter(rows[6]).split("|")
                     for glyph in glyphs:
+                        idx = 0
                         for char in glyph:
-                            if idx == 1:
-                                name = '%04x' % ord(char)
+                            if idx == 0:
+                                item = '%04x' % ord(char)
+                                name = item
                                 idx += 1
                             else:
-                                name += "+" + '%04x' % ord(char)
+                                item = "+" + '%04x' % ord(char)
+                                name = name + item
                         names.append("thing")
                 # Todo:, Only keeps one of pair, handle both
                 # s_glyph = IPAString(unicode_string=glyph)
+                glyph = glyphs[0]
+
                 if ft.validate_word(glyph) and is_valid_ipa(glyph):
                     results[rows[1]]["phones"][rows[5]] = {
                         "glyph": glyph
