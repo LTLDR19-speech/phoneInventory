@@ -60,7 +60,7 @@ with open('data/phoible.csv', mode='r') as infile:
                 names = []
                 if not "|" in rows[6]:
                     glyphs = [prefilter(rows[6])]
-                    names = [rows[1]]
+                    names = [rows[5]]
                 else:
                     glyphs = prefilter(rows[6]).split("|")
                     for glyph in glyphs:
@@ -73,11 +73,12 @@ with open('data/phoible.csv', mode='r') as infile:
                             else:
                                 item = "+" + '%04x' % ord(char)
                                 name = name + item
-                        names.append("thing")
+                        names.append(name)
                 # Todo:, Only keeps one of pair, handle both
                 # s_glyph = IPAString(unicode_string=glyph)
-                glyph = glyphs[0]
-
+                idx = 0
+                for glyph in glyphs:
+                    name = names[idx]
                 if ft.validate_word(glyph) and is_valid_ipa(glyph):
                     results[rows[1]]["phones"][rows[5]] = {
                         "glyph": glyph
@@ -99,6 +100,7 @@ with open('data/phoible.csv', mode='r') as infile:
                         if descrip not in IPAErrors:
                             IPAErrors.append(descrip)
 
+                    idx += 1
 
 langPhoneSets = []
 saneLangPhoneSets = []
@@ -121,7 +123,7 @@ for key, val in results.items():
             frequency[key2]["freq"] += 1
 
     # Sort and Filter Phoneme List
-    langPhoneList = list(dict.fromkeys(langPhoneSet))s
+    langPhoneList = list(dict.fromkeys(langPhoneSet))
     langPhoneList.sort()
     langPhoneString = s.join(langPhoneList)
     results[key]["ComplexPhoneList"] = langPhoneString
